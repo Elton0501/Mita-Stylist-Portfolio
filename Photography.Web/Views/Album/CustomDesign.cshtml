@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "Custom";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .custom-box {
+        padding: 1rem 4rem 2rem;
+    }
+
+    .owl-item {
+        height: 53vh;
+    }
+
+    .item img {
+        height: 53vh;
+    }
+
+    .custom-content-container {
+        padding: 1rem;
+        margin: auto;
+        color: var(--text);
+        text-align: center;
+    }
+
+        .custom-content-container a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+    .btn-design {
+        margin-bottom: 2rem;
+        border: 1px solid var(--text);
+        padding: 5px 15px;
+    }
+
+    @@media(max-width: 500px) {
+        .custom-box {
+            padding: 1rem;
+        }
+
+        .owl-item {
+            height: 26vh;
+        }
+
+        .item img {
+            height: 26vh;
+        }
+    }
+
+    @@media(min-width: 768px) {
+        .custom-content-container {
+            max-width: 750px !important;
+        }
+    }
+
+    @@media(min-width: 992px) {
+        .custom-content-container {
+            max-width: 750px !important;
+        }
+    }
+
+    @@media(min-width: 1200px) {
+        .custom-content-container {
+            max-width: 750px !important;
+        }
+    }
+
+    @@media(min-width: 1400px) {
+        .custom-content-container {
+            max-width: 750px !important;
+        }
+    }
+</style>
+
+<div class="custom-box">
+    <div class="album owl-carousel owl-theme">
+        <div class="item">
+            <img src="~/Content/Images/c1.png" />
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/c2.png" />
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/c3.png" />
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/c4.png" />
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/c5.png" />
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/c6.png" />
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/c7.png" />
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/c8.png" />
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/c9.png" />
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/c10.png" />
+        </div>
+        <div class="item">
+            <img src="~/Content/Images/c11.png" />
+        </div>
+
+
+    </div>
+</div>
+
+<div class="custom-content-container">
+    <h2>CUSTOM DESIGN</h2>
+    <p>
+        Creating and designing unique worlds, characters and adventures through our costumes with made
+        to measure service as an extension of your personal style. we offer you with a choice to custom make your garment to match your requirements.
+        It is of utmost importance to us that your garment is subjected to your preference and liking and we keep that
+        in careful consideration while designing every detail. You can choose right from the Color, Style, Fabric,
+        Embroidery to a preferred Budget and Time frame for your garment.
+    </p>
+
+    <a class="btn-design" href="@Url.Action("Contact","Home")">Request a private appointment now</a>
+    <h2 style="padding-top:2rem;">WARDROBE RENTALS </h2>
+    <p>
+        A vivid collection of clothes designed and curated with creative imagination available to be rented out by all production
+        houses at a budget friendly cost. We cater as a complete package with a onset professional stylist to help you out curate and style.
+    </p>
+    <p>Connect with us on <a href="https://www.mproductionhouseuae.com/" target="_blank"> www.mproductionhouseuae.com</a></p>
+
+</div>
+
+<script src="~/Scripts/jquery.mousewheel.min.js"></script>
+
+<script>
+    var owl = $('.owl-carousel');
+    owl.owlCarousel({
+        loop: true,
+        autoWidth: true,
+        nav: false,
+        dots: false,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 1
+            },
+            960: {
+                items: 2
+            },
+            1200: {
+                items: 2
+            }
+        }
+    });
+    owl.on('mousewheel', '.owl-stage', function (e) {
+        if (e.deltaY > 0) {
+            owl.trigger('prev.owl');
+        } else {
+            owl.trigger('next.owl');
+        }
+        e.preventDefault();
+    });
+</script>
+

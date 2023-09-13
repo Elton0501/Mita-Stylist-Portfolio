@@ -1,0 +1,30 @@
+
+@font-face {
+    font-family: 'regular';
+    src: url('../fonts/cormorantgaramond-regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'medium';
+    src: url('../fonts/cormorantgaramond-medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'light';
+    src: url('../fonts/cormorantgaramond-light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'bold';
+    src: url('../fonts/cormorantgaramond-bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'italic';
+    src: url('../fonts/cormorantgaramond-italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'semibold';
+    src: url('../fonts/cormorantgaramond-semibold.ttf') format('truetype');
+}

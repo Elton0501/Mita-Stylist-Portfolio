@@ -1,0 +1,338 @@
+﻿@model DataModels.AdminIndexModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int Count = 0;
+}
+
+<style>
+    .admin-tiles{
+        text-decoration:none !important;
+    }
+</style>
+
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    </div>
+    <div class="row dash-boxes">
+        <div class="col-xl-12 col-md-12 mb-12 pb-2">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Web Vist Count
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="TodayOrders"> @Model.WebVisitCount</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="bi bi-calendar-date fa-2x" style=" color: #1cc88a;"></i>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        @for (int i = 0; i < Model.Categories.Count(); i++)
+        {
+            <div class="col-xl-3 col-md-6 mb-4">
+                @{
+                    var cardlink = "";
+                    if (Model.Categories[i].Name == "VOGUE INDIA DUBAI X TOURISM" || Model.Categories[i].Name == "BRIDAL STYLING" || Model.Categories[i].Name == "TRAVEL & PHOTOGRAPHY JOURNAL")
+                    {
+                        if (Model.Categories[i].Albums.Count() > 0)
+                        {
+                            var albumid = Model.Categories[i].Albums.FirstOrDefault().Id;
+                            cardlink = "/Admin/AlbumImageList?AlbumId=" + albumid;
+                        }
+                    }
+                    else
+                    {
+                        var catid = Model.Categories[i].Id;
+                        cardlink = "/Admin/AlbumList?Id=" + catid;
+                    }
+                }
+                <a class="admin-tiles" href="@cardlink">
+                    <div class="card @(i == 0 ? "border-left-primary" : i == 1 ? "border-left-info" : i == 2 ? "border-left-danger" : "border-left-primary") shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold @(i == 0 ? "text-primary" : i == 1 ? "text-info" : i == 2 ? "text-danger" : "text-primary") text-uppercase mb-1">
+                                        @Model.Categories[i].Name
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">  @Model.Categories[i].Albums.Count()</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-journal-album fa-2x" style=" color: #3a61d0;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+
+    </div>
+
+    <div class="adminpage-head mt-3 row" style="padding: 0rem 0.5rem;">
+        <div class="col-lg-6 col-md-12 col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h5>Album Visit</h5>
+                    <a href="/Admin/PageVisitCount" class="btn btn-primary p-1">See More</a>
+                </div>
+                <div class="card-body">
+                    <table id="TravelTable" class="table table-bordered table-striped" cellspacing="0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Album</th>
+                                <th>Category</th>
+                                <th>Visit Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Albums)
+                            {
+                                Count = Count + 1;
+                                <tr>
+                                    <td>@Count</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Category.Name</td>
+                                    <td>@item.VisitCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h5>Contacts</h5>
+                    <a href="/Admin/Contact" class="btn btn-info p-1">See More</a>
+                </div>
+                <div class="card-body">
+                    <table id="TravelTable2" class="table table-bordered table-striped" cellspacing="0">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Sr No</th>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Service</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Contacts)
+                            {
+                                Count = Count + 1;
+                                <tr>
+                                    <td>@Count</td>
+                                    <td>@item.FirstName @item.LastName</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Service</td>
+                                    <td>@item.Message</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row bg-white p-3">
+    <div class="charts col-12">
+        <h6 class="text-center p-0 m-0 text-uppercase">
+            Website User Visit
+        </h6>
+        <canvas id="myChart4"></canvas>
+    </div>
+</div>
+
+<div class="Newcharts mt-3 bg-white p-3">
+    <h6 class="text-center p-0 m-0 pt-3 text-uppercase">
+        No. of user visit pages Between two dates
+    </h6>
+    <div class="d-flex flex-wrap">
+        <div class="mr-2">
+            <small class="pr-2">Select type</small>
+            <br />
+            <select id="WorkPage" class="form-control">
+                @foreach (var item in Model.Categories)
+                {
+                    <option value="@item.Name">@item.Name</option>
+                }
+            </select>
+        </div>
+        <div class="mr-2">
+            <small class="pr-2">Start Date</small><input type="date" id="StartDate" class="form-control" />
+        </div>
+        <div class="mr-2">
+            <small class="pr-2">End Date</small><input type="date" id="EndDate" class="form-control" />
+        </div>
+        <div class="align-self-end">
+            <button onclick="daySale()" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+    <canvas id="myChart2"></canvas>
+</div>
+
+<script>
+    $(document).ready(function () {
+        TriCharts();
+    });
+    let myChart2 = new Chart();
+    daySale();
+    function daySale() {
+        if ($("#StartDate").val() > $("#EndDate").val()) {
+            alert("End date should be greater then start date");
+        }
+        else {
+            myChart2.destroy();
+            daySaleData();
+        }
+    }
+    function TriCharts() {
+        let myChart4 = new Chart();
+        $.ajax({
+            url: '/Admin/pieChart',
+            success: function (response) {
+                var Days = [];
+                var value = [];
+                for (var i = 0; i < response.length; i++) {
+                    Days.push(response[i].Key);
+                    value.push(response[i].Value);
+                }
+                let config = {
+                    type: 'bar',
+                    data: {
+                        labels: Days,
+                        datasets: [{
+                            label: 'No. Of Visitors On Web',
+                            data: value,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgb(231, 216, 84)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgb(231, 216, 84)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                            }
+                        }
+                    },
+                };
+                if (myChart4 != null) {
+                    myChart4.destroy();
+                }
+                myChart4 = new Chart(document.getElementById('myChart4'), config);
+            },
+            error: function (response) {
+                alert("Sorry web visit chart have some issue!");
+            }
+        })
+    };
+    $('#WorkPage').on('change', function () {
+        daySaleData()
+    });
+    function daySaleData() {
+        var first = $("#StartDate").val();
+        var second = $("#EndDate").val();
+        var Name = $("#WorkPage").val();
+        $.ajax({
+            url: '/Admin/barChart',
+            data: {
+                First: first,
+                Second: second,
+                name: Name,
+            },
+            success: function (response) {
+                $("#StartDate").val(first);
+                $("#EndDate").val(second);
+                var Days = [];
+                var value = [];
+                for (var i = 0; i < response.length; i++) {
+                    Days.push(response[i].Key);
+                    value.push(response[i].Value);
+                }
+                let config = {
+                    type: 'bar',
+                    data: {
+                        labels: Days,
+                        datasets: [{
+                            label: 'No. of Visitor',
+                            data: value,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgb(231, 216, 84)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgb(231, 216, 84)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                            }
+                        }
+                    },
+                };
+                if (myChart2 != null) {
+                    myChart2.destroy();
+                }
+                myChart2 = new Chart(document.getElementById('myChart2'), config);
+            },
+            error: function (response) {
+                alert("Sorry this chart have some issue!");
+            }
+        })
+    }
+</script>

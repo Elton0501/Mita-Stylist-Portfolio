@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+
+<style>
+    .name-pa {
+        padding: 0;
+    }
+
+    .fname {
+        padding-right: 1rem
+    }
+
+    .wide {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid var(--secondary);
+    }
+
+    .contact {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 68vh; /* set the height of the parent to full viewport height */
+    }
+
+    #contact {
+        margin: auto;
+        color: var(--text);
+    }
+
+    .contact-head {
+        padding: 0.7rem 0;
+        background-color: var(--secondary);
+        color: #ffffff;
+    }
+
+    .contact-btn {
+        font-size: 2vh;
+        border: 1px solid var(--secondary);
+        color: var(--text);
+        background-color: transparent;
+        box-shadow: 2px 2px;
+        padding: 3px 15px;
+    }
+</style>
+<div class="contact-head">
+    <div class="container">
+        <h1 class="px-2">CONNECT WITH MITA</h1>
+    </div>
+</div>
+<div>
+    <div class="p-3 text-center">
+        <span class="error"></span>
+    </div>
+    <div class="contact container">
+        <form id="contact" class="container">
+            <div class="name row py-2">
+                <div class="fname name-pa col-lg-6 col-md-6 col-12">
+                    <label>First Name*</label><br />
+                    <input class="wide" type="text" id="FirstName" name="FirstName" required/>
+                </div>
+                <div class="lname name-pa col-lg-6 col-md-6 col-12">
+                    <label>Last Name</label><br />
+                    <input class="wide" type="text" name="LastName"/>
+                </div>
+            </div>
+            <div class="email py-2">
+                <label>Email*</label><br />
+                <input class="wide" type="email" id="Email" name="Email" required/>
+            </div>
+            <div class="services py-2">
+                <label>What service do you require?*</label><br />
+                <select class="wide" name="Service">
+                    <option value="Modelling">Modelling</option>
+                    <option value="Styling">Styling</option>
+                    <option value="Designing">Designing</option>
+                </select>
+            </div>
+            <div class="email py-2">
+                <label>Description*</label><br />
+                <textarea class="wide" name="Message"></textarea>
+            </div>
+
+            <button class="contact-btn" id="Contact-form" type="button">SUBMIT</button>
+        </form>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+
+<script>
+    //document.getElementById("wrapper").onclick = function () {
+    //    var className = " " + wrapper.className + " ";
+
+    //    this.className = ~className.indexOf(" active ")
+    //        ? className.replace(" active ", " ")
+    //        : this.className + " active";
+    //};
+
+    $("#contact").validate({
+        rules: {
+            Email: {
+                required: true,
+                email: true,
+            },
+            FirstName: {
+                required: true,
+            },
+        },
+        messages: {
+            Email: {
+                required: '* Email required',
+                email: '* Enter your valid email'
+            },
+            FirstName: {
+                required: '* Name is required',
+            },
+        }
+    });
+
+    $("#Contact-form").click(function () {
+        if ($("#contact").valid()){
+            $("#Contact-form").prop('disabled', true);
+            $.ajax({
+                type: 'POST',
+                url: '/Home/Contact',
+                data: $("#contact").serialize(),
+                success: function (response) {
+                    $("#Contact-form").prop('disabled', false);
+                    if (response == "true") {
+                        jQuery("#contact")[0].reset();
+                        $(".error").addClass("text-success");
+                        $(".error").html("* Successfully send");
+                    }
+                },
+                error: function (response) {
+                    alert("Something went wrong");
+                    $("#Contact-form").prop('disabled', false);
+                }
+            });
+            $("#Contact-form").prop('disabled', false);
+        }
+    });
+</script>

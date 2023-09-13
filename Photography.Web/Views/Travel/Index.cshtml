@@ -1,0 +1,81 @@
+﻿@model Models.TravelAlbum
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .travel-dump {
+        text-align: center;
+    }
+
+    .travel-info {
+        padding-top: 3rem;
+    }
+
+    .t-imgs {
+        display: flex;
+    }
+
+        .t-imgs img {
+            padding-right: 5px;
+            padding-bottom: 10px;
+        }
+
+    .travel-dump p {
+        padding: 1.5rem 0;
+        font-size: 19px;
+        margin-bottom: 0;
+    }
+</style>
+
+<div class="travel-banner">
+    <img src="@Model.BannerImage" />
+</div>
+
+<div class="container">
+    <div class="travel-info">
+        <h5>@Model.AlbumDate.ToString("MMMM , dd yyyy") <i class="bi bi-dot"></i> @Model.Name</h5>
+        <h1>Bodrum with Bodrum Edition</h1>
+    </div>
+
+    @foreach (var item in Model.TravelAlbumDesc)
+    {
+        <div class="travel-dump">
+            <p>@Html.Raw(item.Description)</p>
+            <div class="t-imgs row">
+                @for (int i = 0; i < item.TravelAlbumImages.Count(); i++)
+                {
+                    int count = item.TravelAlbumImages.Count();
+                    <img src="@item.TravelAlbumImages[i].Image"
+                         class="@(count == 0 && i == 3 ? "col-lg-4 col-md-4 col-12" : count == 3 ?  "col-lg-4 col-md-4 col-6" :
+                   count == 2 ? "col-6" : "col-12")" />
+                }
+            </div>
+        </div>
+    }
+    @*<div class="travel-dump row">
+        <p>Bodrum, Turkey has always been on my wishlist it is supposedly on every ‘Top 10 places to visit’ in the world list.</p>
+        <div class="t-imgs">
+            <img src="~/Content/Images/s2.png" class="col-lg-4 col-md-4 col-6" />
+            <img src="~/Content/Images/s3.png" class="col-lg-4 col-md-4 col-6" />
+            <img src="~/Content/Images/s4.png" class="col-lg-4 col-md-4 col-6" />
+        </div>
+    </div>
+    <div class="travel-dump row">
+        <p>Bodrum, Turkey has always been on my wishlist it is supposedly on every ‘Top 10 places to visit’ in the world list.</p>
+        <div class="t-imgs">
+            <img src="~/Content/Images/s3.png" class="col-lg-4 col-md-4 col-6" />
+            <img src="~/Content/Images/s2.png" class="col-lg-4 col-md-4 col-6" />
+            <img src="~/Content/Images/s1.png" class="col-lg-4 col-md-4 col-6" />
+        </div>
+    </div>
+    <div class="travel-dump">
+        <p>Bodrum, Turkey has always been on my wishlist it is supposedly on every ‘Top 10 places to visit’ in the world list.</p>
+        <div class="t-imgs row">
+            <img src="~/Content/Images/s3.png" class="col-6" />
+            <img src="~/Content/Images/s4.png" class="col-6" />
+        </div>
+    </div>*@
+</div>
+

@@ -1,0 +1,156 @@
+﻿@model Models.Category
+@{
+    ViewBag.Title = "CategoryEdit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .img-container {
+        border: 1px solid #d1d3e2;
+        padding: 0.75rem;
+        border-radius: 10px;
+    }
+
+    .img-pro-box {
+        width: 17%;
+        margin: 1rem;
+        border-radius: 10px;
+    }
+
+
+    .error {
+        font-size: 1rem;
+        width: 100%;
+    }
+</style>
+
+<div class="adminpage-head">
+    <div class="card shadow mb-4">
+        <div class="form-horizontal">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h4>Edit <small class="text-primary">@Model.Name</small></h4>
+            </div>
+            <div class="card-body">
+                <form id="Category-edit">
+                    <input name="Id" value="@Model.Id" hidden />
+                    <input value="@Model.IsActive.ToString()" name="IsActive" hidden />
+                    <input value="@Model.CreatedOn" name="CreatedOn" hidden />
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label class="control-label">Category Name</label><br />
+                            <input class="form-control" name="Name" value="@Model.Name" required readonly/>
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="control-label">Category Description</label><br />
+                            <input class="form-control" name="Description" value="@Model.Description" required />
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <div class="form-group col-md-10 p-0">
+                            <div class="img-container">
+                                <label for="exampleFormControlInput1">Banner Image</label>
+                                <br />
+                                <input name="Image" value="@Model.Image" id="Image" hidden />
+                                <input id="imageUpload" type="file" name="ImageOne" accept="image/*" class="form-control-file">
+                                <br />
+                                <img id="PlaceImage" alt="" src="@Model.Image" style="width: 20%; margin-top: 5px;" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button id="Categoryedit" class="btn btn-default btn-outline-primary" type="button">Edit</button>
+                            </div>
+                        </div>
+                        <div class="form-group ml-3">
+                            <div class="">
+                                <a href="/Admin/CategoryList" id="catbox-close" class="btn btn-default btn-outline-danger">Back To List</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#Category-edit').validate({
+        rules: {
+            Name: {
+                required: true,
+            },
+        },
+        messages: {
+            Name: {
+                required: '* Category Name is required',
+            },
+        }
+    });
+    $("#Categoryedit").click(function (e) {
+        e.preventDefault();
+        if ($("#Category-edit").valid()) {
+            $.ajax({
+                type: 'Post',
+                url: '@Url.Action("CategoryEdit", "Admin")',
+                data: $("#Category-edit").serialize(),
+            })
+            .done(function (response) {
+                if (response == "true") {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Category edited Successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setTimeout(function () {// wait for 5 secs(2)
+                        window.location.href = "/Admin/CategoryList"; // then reload the page.(3)
+                    }, 1550);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                })
+            });
+         }
+    });
+         $("#imageUpload").change(function () {
+        var element = this;
+
+        var formData = new FormData();
+        var totlaFiles = element.files.length;
+
+        for (var i = 0; i < totlaFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file)
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadImage","Image")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                if (response.Success == true)
+                {
+                    $("#Image").val(response.ImageURL);
+                    $("#PlaceImage").attr("src", response.ImageURL);
+                }
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
+        });
+    });
+</script>
+

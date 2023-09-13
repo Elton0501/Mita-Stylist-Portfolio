@@ -1,0 +1,29 @@
+﻿﻿
+@{
+    Layout = null;
+    ViewBag.Title = "Test";
+}
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<h2>Test</h2>
+
+<button onclick="test()">Test</button>
+
+<label style="color:white;" id="test-result">ABC</label>
+
+
+<script>
+    function test() {
+        $.ajax({
+            url: '@Url.Action("TestResult","Home")',
+            dataType: 'json',
+            success: function (result) {
+                debugger
+                alert(result);
+            },
+            error: function (xhr, status, error) {
+                debugger
+                alert("Something Went Wrong HERE");
+            }
+        })
+    }
+</script>

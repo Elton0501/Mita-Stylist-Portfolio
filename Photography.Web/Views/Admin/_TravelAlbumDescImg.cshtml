@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Models.TravelAlbumImage>
+@{
+    Layout = null;
+    var name = Convert.ToString(ViewBag.AlbumName);
+}
+<style>
+    .jumbotron {
+        color: #284738;
+        background: #dce2df;
+    }
+
+    .navbar-inverse {
+        background: #284738;
+    }
+
+        .navbar-inverse .navbar-nav > li > a {
+            color: #e0fff0;
+        }
+
+        .navbar-inverse .navbar-brand {
+            color: #e0fff0;
+        }
+
+    .flex {
+        display: flex;
+        flex-wrap: wrap;
+    }
+</style>
+@if (Model != null && Model.Count() > 0)
+{
+    <!-- content start -->
+    <div class="container">
+        <div class="row flex">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-sm-6 mb-2">
+                    <div class="thumbnail">
+                        <img src="@item.Image" class="w-100">
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+    <script>
+        var name = '@name';
+        $(".modal-title").html(name)
+    </script>
+
+}
+else
+{
+    <h6>No images available!</h6>
+}

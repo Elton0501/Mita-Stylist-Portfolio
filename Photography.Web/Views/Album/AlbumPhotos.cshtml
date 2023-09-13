@@ -1,0 +1,150 @@
+﻿@model Models.Album
+@{
+    ViewBag.Title = "FinalAlbum";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        overflow: hidden;
+    }
+
+    .owl-item {
+        height: 75vh;
+    }
+
+    .item img {
+        height: 75vh;
+    }
+
+    .banner-container {
+        position: relative;
+        display: inline-block; /* or block, depending on your layout */
+    }
+
+    .ban-img {
+        height: 75vh;
+    }
+
+    @@media (max-width:768px) {
+        .blb-img {
+           width: 100vw !important;
+           object-fit: cover;
+        }
+    }
+
+    @@media (max-width:500px){
+        .alb-img {
+            width: 100vw !important;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            object-fit: cover;
+        }
+    }
+
+    /* Landscape */
+    @@media only screen and (min-width: 1024px) and (max-height: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5) {
+        .owl-item {
+            height: 78vh;
+        }
+
+        .item img {
+            height: 78vh;
+        }
+
+        .ban-img {
+            height: 78vh;
+        }
+    }
+
+/* Portrait */
+@@media only screen
+  and (min-width: 1024px)
+  and (max-height: 1366px)
+  and (orientation: portrait)
+  and (-webkit-min-device-pixel-ratio: 1.5) {
+    .owl-item {
+        height: 85vh;
+    }
+
+    .item img {
+        height: 85vh;
+    }
+
+    .ban-img {
+        height: 85vh;
+    }
+}
+
+
+</style>
+
+<div class="album owl-carousel owl-theme">
+    @foreach (var item in Model.AlbumImages.OrderByDescending(x => x.Id))
+    {
+        <div class="item">
+            <div class="banner-container">
+                @{ 
+                    var imgClass = item.isLandscape == true ? "blb-img" : "";
+                }
+                <img class="ban-img alb-img @imgClass" src="@item.Image" />
+            </div>
+        </div>
+    }
+</div>
+
+<script src="~/Scripts/jquery.mousewheel.min.js"></script>
+
+<script>
+    //$(document).ready( function () {
+    //    $(".ban-img").each(function (index, element) {
+    //        // Calculate aspect ratio and store it in HTML data- attribute
+    //        var aspectRatio = $(element).width() / $(element).height();
+    //        $(element).data("aspect-ratio", aspectRatio);
+    //        // Conditional statement
+
+    //        if (aspectRatio > 1) {
+    //            // Image is landscape
+
+    //            $(element).addClass("blb-img");
+
+    //        } else if (aspectRatio < 1) {
+    //            // Image is portrait
+    //        } else {
+    //            // Image is square
+    //            $(element).addClass("alb-img");
+    //        }
+    //    })
+    //});
+
+    var owl = $('.owl-carousel');
+    owl.owlCarousel({
+        loop: true,
+        autoWidth: true,
+        nav: false,
+        dots: false,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 3
+            },
+            960: {
+                items: 5
+            },
+            1200: {
+                items: 6
+            }
+        }
+    });
+    owl.on('mousewheel', '.owl-stage', function (e) {
+        if (e.deltaY > 0) {
+            owl.trigger('prev.owl');
+        } else {
+            owl.trigger('next.owl');
+        }
+        e.preventDefault();
+    });
+</script>
+

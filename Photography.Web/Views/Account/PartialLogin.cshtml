@@ -1,0 +1,108 @@
+﻿@{
+    var Pageurl = Convert.ToString(ViewBag.Url);
+    var message = Convert.ToString(TempData["ConfirmEmail"]);
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<div class="container login-box">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4 login-fullscreen">
+            <div class="logon-wrap">
+                <div class="login-wrap p-0">
+                    <h3 class="mb-4 text-center">Login</h3>
+                    <span>@message</span>
+                    <form class="signin-form" id="LoginForm">
+                        <div class="form-group">
+                            <input type="text" name="Email" id="Email" class="form-control inbor" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input id="password-field" name="Password" type="password" class="form-control inbor" placeholder="Password" required>
+                            <span toggle="#password-field" class="bi bi-eye-slash- field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="UserLogin" class="form-control btn btn-primary submit px-3">Sign In</button>
+                        </div>
+                        <div class="form-group d-md-flex">
+                            <div class="w-md-50 text-md-right">
+                                @*<a href="@Url.Action("Register","Account",new {url=Pageurl })" style="color: #fff">Don't have an account yet? Register</a>*@
+                            </div>
+                            <div class="w-50 text-md-right">
+                                <a href="/forgotpassword" style="color: #fff">Forgot Password</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".toggle-password").click(function () {
+        $(this).toggleClass("bi-eye bi-eye-slash");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+        $("#LoginForm").validate({
+        rules: {
+            Email: {
+                required: true,
+                email: true,
+            },
+            Password: {
+                required: true,
+            },
+        },
+        messages: {
+            Email: {
+                required: '* Email required',
+                email: '* Enter your valid email'
+            },
+            Password: {
+                required: '* Password is required',
+            },
+        }
+    });
+    $("#UserLogin").click(function () {
+        $("#UserLogin").prop('disabled', true);
+        if ($("#LoginForm").valid()) {
+            var Password = $("#password-field").val();
+            var EmailId = $("#Email").val();
+            $.ajax({
+                type: 'POST',
+                url: '/Account/Login',
+                data: {
+                    Password: Password,
+                    Email: EmailId,
+                    Url: '@Pageurl'
+                },
+                success: function (response) {
+                    if (response.result == true) {
+                        if (response.url != null && response.url != "") {
+                            window.location.href = response.url;
+                            $("#UserLogin").prop('disabled', false);
+                        }
+                        else {
+                            var url = "/";
+                            window.location.href = url;
+                            $("#UserLogin").prop('disabled', false);
+                        }
+                    }
+                    else {
+                        alert(response.msg);
+                        $("#UserLogin").prop('disabled', false);
+                    }
+                },
+                error: function (response) {
+                    alert("Something went wrong");
+                    $("#UserLogin").prop('disabled', false);
+                }
+            });
+        }
+        $("#UserLogin").prop('disabled', false);
+    });
+</script>
+

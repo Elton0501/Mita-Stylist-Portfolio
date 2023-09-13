@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "AlbumImageList";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var albumId = ViewBag.AlbumID;
+    var albumName = ViewBag.AlbumName;
+}
+
+<div class="adminpage-head">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <div>
+                <h6 class="m-0 font-weight-bold text-primary text-uppercase">Album - <span style="color: var(--success);">@albumName</span></h6>
+            </div>
+            <div>
+                @*<a type="button" class="btn btn-primary" id="add-category" href="@Url.Action("AddAlbumImages","Admin",new {AlbumId = albumId})">
+            <span class="glyphicon glyphicon-cog"></span> Add Album Images
+        </a>*@
+                <div class="form-group mb-0">
+                    <div class="img-container">
+                        <label for="exampleFormControlInput1">Add Images for this album</label>
+                        <br />
+                        <input id="ProductImage" name="PImageName" value="" hidden />
+                        <input id="imageUpload" type="file" name="ImageOne" accept="image/*" class="form-control-file" multiple>
+                        @*<div id="alliamge">
+                </div>*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-body table-responsive" id="porderpartial">
+      
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#OrderViewTable").DataTable();
+        loadPOPartial();
+    });
+    function loadPOPartial() {
+        var id = '@albumId';
+        $.ajax({
+            url: '@Url.Action("_AlbumImageList", "Admin")',
+            data: {
+                AlbumId: id,
+            }
+        })
+           .done(function (response) {
+               $("#porderpartial").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
+        });
+    }
+        $("#imageUpload").change(function () {
+        var element = this;
+
+        var formData = new FormData();
+        var totlaFiles = element.files.length;
+
+        for (var i = 0; i < totlaFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file)
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("MultipleUploadImageDefault", "Image")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                debugger
+            if (response != null) {
+                var data = JSON.parse(response);
+                //var arrayData = [];
+                //arrayData = data;
+            $.ajax({
+               type:"POST",
+               url: '@Url.Action("AddAlbumImages", "Admin")',
+               data: {
+                   stringData: data,
+                   AlbumId:'@albumId'
+               }
+           })
+           .done(function (response) {
+               loadPOPartial();
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
+        });
+            }
+            else {
+             //   $('.loadermodel').hide();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
+            }
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
+        });
+    });
+</script>

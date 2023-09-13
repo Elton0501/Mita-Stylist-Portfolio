@@ -1,0 +1,196 @@
+﻿@model Models.HomeBanner
+
+@{
+    ViewBag.Title = "EditBanner";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .img-container {
+        border: 1px solid #d1d3e2;
+        padding: 0.75rem;
+        border-radius: 10px;
+    }
+    .img-pro-box {
+        width: 100%;
+        margin: 1rem;
+        border-radius: 10px;
+    }
+
+    .error {
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .img-boxx {
+        position: relative;
+    }
+
+    #img-delete {
+        position: absolute;
+        left: 10px;
+        top: 0;
+        padding: 4px 8px 2px;
+        background: white;
+        font-size: 1.3rem;
+        border-radius: 20px;
+    }
+
+    .btn-outline-danger:hover {
+        color: #fff;
+        background-color: #e74a3b !important;
+        border-color: #e74a3b !important;
+    }
+</style>
+<div class="adminpage-head">
+    <div class="card shadow mb-4">
+        <div class="form-horizontal">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h4>Edit Banner</h4>
+            </div>
+
+            <div class="card-body">
+                <form id="Productcreate">
+                    <input name="Id" value="@Model.Id" hidden />
+                    <input value="@Model.IsActive.ToString()" name="IsActive" hidden />
+                    <input value="@Model.CreatedOn" name="CreatedOn" hidden />
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Heading <small class="text-danger">* required</small></label><br />
+                            <input class="form-control" name="Heading" value="@Model.Heading" required />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Sub Heading <small class="text-danger">* required</small></label><br />
+                            <input class="form-control" name="SubHeading" value="@Model.SubHeading" required />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Sub Title</label><br />
+                            <input class="form-control" value="@Model.SubTitle" name="SubTitle" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Button Text</label><br />
+                            <input class="form-control" value="@Model.ButtonText" name="ButtonText" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Button URL</label><br />
+                            <input class="form-control" value="@Model.ButtonUrl" name="ButtonUrl" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-6 col-12">
+                            <div class="img-container">
+                                <label for="exampleFormControlInput1">Image <small class="text-danger">* required</small></label>
+                                <br />
+                                <input name="Image" id="Image" value="@Model.Image" hidden />
+                                <input id="imageUpload" type="file" name="ImageOne" accept="image/*" class="form-control-file">
+                                <br />
+                                <img id="PlaceImage" alt="" src="@Model.Image" style="width: 20%; margin-top: 5px;" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button class="btn btn-default btn-outline-primary" type="button" id="ProductCreateBtn">Save</button>
+                            </div>
+                        </div>
+                        <div class="form-group ml-3">
+                            <div class="">
+                                <a id="productbox-close" href="/Admin/BannerList" class="btn btn-default btn-outline-danger">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#Productcreate').validate({
+        rules: {
+            SubHeading: {
+                required: true,
+            },
+            Heading: {
+                required: true,
+            },
+        },
+        messages: {
+            SubHeading: {
+                required: '* SubHeading is required',
+            },
+            Heading: {
+                required: '* Heading is required',
+            },
+        }
+    });
+    $("#ProductCreateBtn").click(function () {
+        if ($("#Productcreate").valid()) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("EditBanner", "Admin")',
+                data: $("#Productcreate").serialize(),
+            })
+            .done(function (response) {
+                if (response == "true") {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Banner edit Successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setTimeout(function () {// wait for 5 secs(2)
+                        window.location.href = "/Admin/BannerList"; // then reload the page.(3)
+                    }, 1550);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
+            });
+        }
+    });
+        $("#imageUpload").change(function () {
+        var element = this;
+
+        var formData = new FormData();
+        var totlaFiles = element.files.length;
+
+        for (var i = 0; i < totlaFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file)
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadImage","Image")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                if (response.Success == true)
+                {
+                    $("#Image").val(response.ImageURL);
+                    $("#PlaceImage").attr("src", response.ImageURL);
+                }
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
+        });
+    });
+</script>

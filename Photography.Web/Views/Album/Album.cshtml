@@ -1,0 +1,219 @@
+﻿@model Models.Category
+@{
+    ViewBag.Title = "ListAlbum";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    body {
+        overflow: hidden;
+    }
+
+    .owl-item {
+        height: 75vh;
+    }
+
+    .item img {
+        height: 75vh;
+    }
+
+    .banner-container {
+        position: relative;
+        display: inline-block; /* or block, depending on your layout */
+    }
+
+    .centered-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px; /* Adjust the font size as needed */
+        color: white; /* Set the color of your text */
+        text-align: center;
+        /* You can also add additional styles like font-family, background, etc. */
+    }
+
+
+    .text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .ban-img {
+        width: 100vw !important;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        object-fit: cover;
+    }
+
+    .album-container {
+        position: relative;
+        display: inline-block; /* or block, depending on your layout */
+    }
+
+    .image {
+        opacity: 1;
+        display: block;
+        width: 100%;
+    }
+
+    .middle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: #000000;
+    }
+
+    .album-container:hover .image {
+        opacity: 0.7;
+    }
+
+    .album-container:hover .middle {
+        opacity: 0.7;
+    }
+
+    .album-info-overlay h1 {
+        color: white;
+    }
+
+    .album-info-overlay a {
+        color: white;
+        text-decoration: none;
+        border: 1px solid white;
+        padding: 5px 15px;
+    }
+
+
+    .album-cover {
+        cursor: pointer;
+        height: 75vh;
+    }
+
+    @@media (max-width:768px) {
+        .blb-img {
+            width: 100vw !important;
+            object-fit: cover;
+        }
+    }
+
+    @@media (max-width:500px) {
+        .alb-img {
+            width: 100vw !important;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            object-fit: cover;
+        }
+    }
+
+    /* Landscape */
+    @@media only screen and (min-width: 1024px) and (max-height: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 1.5) {
+        .owl-item {
+            height: 78vh;
+        }
+
+        .item img {
+            height: 78vh;
+        }
+
+        .album-cover {
+            height: 78vh;
+        }
+    }
+
+    /* Portrait */
+    @@media only screen and (min-width: 1024px) and (max-height: 1366px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5) {
+        .owl-item {
+            height: 85vh;
+        }
+
+        .item img {
+            height: 85vh;
+        }
+
+        .album-cover {
+            height: 85vh;
+        }
+    }
+</style>
+
+<div class="owl-carousel owl-theme">
+    <div class="item">
+        <div class="banner-container">
+            <img class="ban-img" src="@Model.Image" />
+            <div class="centered-text">
+                <h1>@Model.Name</h1>
+            </div>
+        </div>
+    </div>
+    @foreach (var item in Model.Albums.OrderByDescending(x => x.CreatedOn))
+    {
+        <div class="item">
+            <div class="album-container">
+                @{
+                    var imgClass = item.isLandscape == true ? "blb-img" : "";
+                }
+                <img class="album-cover image alb-img @imgClass" src="@item.ThumbnailImage" />
+                <div class="album-info-overlay middle">
+                    <div class="text">
+                        <h1>@item.Name</h1>
+                        <a class="view-btn" href="@Url.Action("AlbumPhotos","Album",new { AlbumName = item.Name})">VIEW ALL</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script src="~/Scripts/jquery.mousewheel.min.js"></script>
+
+<script>
+    var owl = $('.owl-carousel');
+    owl.owlCarousel({
+        loop: true,
+        autoWidth: true,
+        nav: false,
+        dots: false,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 3
+            },
+            960: {
+                items: 5
+            },
+            1200: {
+                items: 6
+            }
+        }
+    });
+    owl.on('mousewheel', '.owl-stage', function (e) {
+        if (e.deltaY > 0) {
+            owl.trigger('prev.owl');
+        } else {
+            owl.trigger('next.owl');
+        }
+        e.preventDefault();
+    });
+</script>
+
+
+
+
+
+
+
+

@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+
+<style>
+    .abt-left {
+        padding: 0 2.5rem 0 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .abt-right-img-box {
+        padding: 0 0 0 2.5rem;
+        border-left: 2px solid var(--text);
+    }
+
+    .abt-container {
+        margin: auto;
+        color: var(--text);
+    }
+
+    .abt-right-content-box {
+        padding-bottom: 2.5rem;
+        color: var(--text);
+    }
+
+    .abt-left-content-box {
+        color: var(--text);
+    }
+
+    @@media(max-width: 750px) {
+        .abt-left {
+            padding-right: calc(var(--bs-gutter-x) * .5);
+            padding-left: calc(var(--bs-gutter-x) * .5);
+        }
+
+        .abt-right-img-box {
+            padding: 0;
+        }
+    }
+
+    @@media(min-width: 768px) {
+        .abt-container {
+            max-width: 750px !important;
+        }
+    }
+
+    @@media(min-width: 992px) {
+        .abt-container {
+            max-width: 850px !important;
+        }
+    }
+
+    @@media(min-width: 1200px) {
+        .abt-container {
+            max-width: 850px !important;
+        }
+    }
+
+    @@media(min-width: 1400px) {
+        .abt-container {
+            max-width: 1000px !important;
+        }
+    }
+
+    @@media(max-width: 500px) {
+        .abt-left-content-box {
+            padding-top: 1.5rem;
+        }
+
+        .abt-right-content-box {
+            padding-bottom: 2rem;
+            padding-top: 2rem;
+        }
+    }
+
+    @@media only screen and (min-width: 1024px) and (max-height: 1366px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 1.5) {
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between
+        }
+    }
+</style>
+
+<div class="abt-container">
+    <div class="row about-box">
+        <div class="col-lg-7 col-md-7 col-12 abt-left">
+            <div class="abt-left-img-box">
+                <img src="~/Content/Images/abt-left.png" />
+            </div>
+            <div class="abt-left-content-box">
+                <br />
+                <h2>MITA DAS GUPTA</h2>
+                <p>fashion stylist / Costume designer </p>
+                <br />
+                <p>
+                    Since the inception of her journey,
+                    Mita Das Gupta has been curating a framework to bring out each one’s personal style.
+                    Born and raised in Dubai she gets her roots from Bangladesh and Sri Lanka.
+                </p>
+                <p>
+                    Mita truly understands that styling doesn’t have a boundary based on shapes,
+                    sizes or cultures, so weather you’re a busy professional ready to level up your work goals,
+                    a new mom embracing her body post baby, to showcase a glam look at a family wedding,
+                    bringing out the best outfits for characters or finding yourself in new definition
+                    she has got you covered.
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-5 col-12">
+            <div class="abt-right-content-box">
+                <h1>The Journey that leads to ...</h1>
+            </div>
+            <div class="abt-right-img-box">
+                <img src="~/Content/Images/abt-right.png" />
+            </div>
+        </div>
+        <div class="col-12 pt-4 text-center">
+            <p>
+                She gets her taste from her vivid interaction with various 
+                cultures and different nationalities. She loves being on 
+                set and a part of the process up close bringing out the best 
+                version of people. Mita has built her journey with a lot of E-commerce shoots,
+                TV commercials & media production work. She has endorsed various brands like Ounass, 
+                Landmark, Vouge India, Harper’s Bazar, Tima Abid Designer, Condé Nast India, Dubai
+                tourism and many more home-grown Emirati labels channeling her know-how into a full- fledged business.
+            </p>
+        </div>
+    </div>
+</div>

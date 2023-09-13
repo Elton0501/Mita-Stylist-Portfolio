@@ -1,0 +1,708 @@
+﻿@model DataModels.HomeViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    .banner {
+        position: relative;
+    }
+
+    .ban-content {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        padding: 1.5rem 2.5rem;
+        background-color: #ffffffc9;
+        color: var(--text);
+        width: max-content;
+    }
+
+    .ban-img img {
+        height: 80vh;
+        object-fit: cover;
+    }
+
+    .ban-content button {
+        font-size: 2vh;
+        border: 1px solid var(--secondary);
+        color: var(--text);
+        background-color: transparent;
+        box-shadow: 2px 2px;
+        padding: 3px 15px;
+    }
+
+    .main-content {
+        position: relative;
+    }
+
+        .main-content .owl-theme .custom-nav {
+            position: absolute;
+            top: 40%;
+            left: 0;
+            right: 0;
+        }
+
+            .main-content .owl-theme .custom-nav .owl-prev, .main-content .owl-theme .custom-nav .owl-next {
+                position: absolute;
+                height: 100px;
+                color: inherit;
+                background: none;
+                border: none;
+                z-index: 100;
+            }
+
+                .main-content .owl-theme .custom-nav .owl-prev i, .main-content .owl-theme .custom-nav .owl-next i {
+                    font-size: 2.5rem;
+                    color: #cecece;
+                }
+
+            .main-content .owl-theme .custom-nav .owl-prev {
+                left: 0;
+            }
+
+            .main-content .owl-theme .custom-nav .owl-next {
+                right: 0;
+            }
+
+    .cat-heading {
+        padding: 5rem 0 2rem;
+        text-align: center;
+        color: var(--text);
+    }
+
+    .main-content .owl-item {
+        margin-right: 0 !important;
+    }
+
+    .bridal #sync2 {
+        margin-top: 20px;
+    }
+
+        .bridal #sync2 .owl-item {
+            width: 10px !important;
+            height: 10px;
+            background: #7d81a3;
+            border-radius: 50%;
+            margin: 0 6px;
+        }
+
+            .bridal #sync2 .owl-item.synced {
+                background: #1c277a;
+            }
+
+        .bridal #sync2 .owl-wrapper {
+            width: auto !important;
+            display: inline-block !important;
+        }
+
+    .bridal .owl-controls {
+        display: none !important;
+    }
+
+        .bridal .owl-controls.material-controls {
+            display: block !important;
+        }
+
+    .bridal .owlwrapper {
+        position: relative;
+        text-align: center;
+        margin-top: 100px;
+        margin: 75px auto;
+        width: 703px;
+    }
+
+    .bridal div.owl-next, .bridal div.owl-prev {
+        visibility: hidden;
+    }
+
+    .bridal .owl-item img {
+        /*box-shadow: 0px 1px 10px black; */
+    }
+
+    .bridal .owl-prev, .bridal .owl-next {
+        position: absolute !important;
+    }
+
+    .bridal button {
+        z-index: 99999999999 !important;
+        color: grey !important;
+    }
+
+    .bridal .owl-prev {
+        top: 42%;
+        left: -70px;
+    }
+
+    .bridal .owl-next {
+        top: 42%;
+        right: -70px;
+    }
+
+    .bridal i {
+        color: #1c277a !important;
+    }
+
+    .bridal-slider {
+        padding: 1rem 0;
+        background-image: url('../../content/images/bridalbg.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .travel img {
+        padding-bottom: calc(var(--bs-gutter-x) * .5);
+        padding-top: calc(var(--bs-gutter-x) * .5);
+    }
+
+    .travel-btn a {
+        font-size: 2vh;
+        border: 1px solid var(--secondary);
+        color: var(--text);
+        background-color: transparent;
+        box-shadow: 2px 2px;
+        padding: 10px 25px;
+        text-decoration:none;
+    }
+
+    .travel-small {
+        padding: 0;
+    }
+
+    .timg-box img {
+        padding-bottom: 1.7vh;
+    }
+
+    .clients {
+        padding-bottom: 9vh;
+    }
+
+    .newsletter {
+        text-align: center;
+        padding: 5vh 0 8vh;
+        background-color: var(--secondary);
+        color: #ffffff;
+    }
+
+    
+
+        .buttonIn input {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            outline: none;
+            height: 35px;
+            padding-left: 5px;
+            border-width: 0 0 2px 0;
+            border-color: #ffffff;
+            background: var(--secondary) !important;
+        }
+
+            .buttonIn input::placeholder {
+                color: #ffffff;
+            }
+
+        .buttonIn button {
+            position: absolute;
+            top: 0;
+            right: 0px;
+            z-index: 2;
+            border: none;
+            top: 2px;
+            height: 30px;
+            cursor: pointer;
+            color: white;
+            transform: translateX(2px);
+            background: var(--secondary) !important;
+        }
+
+    .buttonIn {
+        width: 30%;
+        position: relative;
+        margin: auto;
+    }
+
+    .slide-img {
+        transform: scale(0.98);
+        animation: scale 3s forwards cubic-bezier(0.5, 1, 0.89, 1);
+    }
+
+    .album-container {
+        position: relative;
+    }
+
+    .image {
+        opacity: 1;
+        display: block;
+        width: 100%;
+    }
+
+    .middle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: #000000;
+    }
+
+    .album-container:hover .image {
+        opacity: 0.7;
+    }
+
+    .album-container:hover .middle {
+        opacity: 0.7;
+    }
+
+    .album-info-overlay h1 {
+        color: white;
+    }
+
+    .album-info-overlay a {
+        color: white;
+        text-decoration: none;
+        border: 1px solid white;
+        padding: 5px 15px;
+    }
+
+    .text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    @@keyframes scale {
+        100% {
+            transform: scale(1);
+        }
+    }
+
+
+    @@media (max-width: 869px) {
+        .bridal .owl-prev {
+            left: -19px;
+        }
+
+        .bridal .owl-next {
+            right: -19px;
+        }
+    }
+
+    @@media (max-width: 809px) {
+        .bridal .owlwrapper {
+            width: 100%;
+        }
+    } 
+    
+    @@media (max-width: 770px) {
+        .buttonIn {
+            width: 45%;
+            position: relative;
+            margin: auto;
+        }
+    } 
+    
+    @@media (max-width: 500px) {
+        .buttonIn {
+            width: 80%;
+            position: relative;
+            margin: auto;
+        }
+    }
+
+    @@media (max-width: 575px) {
+        .bridal .owl-prev {
+            left: 10px;
+        }
+
+        .bridal .owl-next {
+            right: 10px;
+        }
+    }
+        
+</style>
+
+<div class="banner">
+    <div class="ban-img">
+        <img src="@Model.HomeBanner.Image" />
+    </div>
+    <div class="ban-content">
+        <h1>@Model.HomeBanner.Heading</h1>
+        <h3>@Model.HomeBanner.SubHeading </h3>
+        <button onclick="window.location.href ='@Model.HomeBanner.ButtonUrl'">@Model.HomeBanner.ButtonText</button>
+
+        @*<h1>MITA DAS GUPTA</h1>
+        <h3>fashion stylist / designer </h3>
+        <button>Let's work together'</button>*@
+    </div>
+
+</div>
+
+<div class="ecom-styling">
+    <div class="cat-heading">
+        <h1>COMMERCIAL & ECOMMERCE STYLING</h1>
+    </div>
+
+    <div class="main-content">
+        <div class="owl-carousel owl-theme" id="ecomOwl">
+            @*<div class="item">
+                <img src="~/Content/Images/s1.png" />
+            </div>
+            <div class="item">
+                <img src="~/Content/Images/s2.png" />
+            </div>
+            <div class="item">
+                <img src="~/Content/Images/s3.png" />
+            </div>
+            <div class="item">
+                <img src="~/Content/Images/s4.png" />
+            </div>*@
+        </div>
+        <div class="owl-theme">
+            <div class="owl-controls">
+                <div class="custom-nav owl-nav"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tourism" >
+    <div class="cat-heading" id="styling">
+        <h1>VOGUE INDIA DUBAI X TOURISM</h1>
+        <h4>ON SET STYLING</h4>
+    </div>
+    <div class="container">
+        <div class="row timg-box">
+            <div class="col-lg-9 col-md-9 col-12">
+                <img src="" class="travel-img" id="BigBanner"/>
+            </div>
+            <div class="col-lg-3 col-md-3 col-12" id="SmallBanner">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bridal">
+    <div class="cat-heading">
+        <h1>BRIDAL STYLING</h1>
+    </div>
+
+    <div class="bridal-slider">
+        <section class="container">
+
+            <section class="owlwrapper">
+                <div id="sync1" class="bridal-carousal owl-carousel owl-theme">
+                    @*<div class="item">
+                        <img src="~/Content/Images/bs1.png" />
+                    </div>*@
+                </div>
+
+
+
+                <div class="owl-controls material-controls">
+                    <div class="owl-nav">
+                        <a class="btn-floating btn-large waves-effect grey lighten-2 owl-prev" title=""></a>
+                        <a class="btn-floating btn-large waves-effect grey lighten-2 owl-next" title=""></a>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+</div>
+
+<div class="travel">
+    <div class="cat-heading">
+        <h1>TRAVEL & PHOTOGRAPHY JOURNAL</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="travel-big col-lg-6 col-md-6 col-12">
+                <img src="" id="travel-ban"/>
+            </div>
+            <div class="travel-small col-lg-6 col-md-6 col-12">
+                <div class="row" id="right-small-imgs">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="travel-btn text-center pt-5">
+            <a href="@Url.Action("TravelJournal","Album", new { AlbumName = "TRAVEL & PHOTOGRAPHY JOURNAL" })">VIEW ALL</a>
+        </div>
+    </div>
+</div>
+
+<div class="clients">
+    <div class="cat-heading">
+        <h1>CLIENTS</h1>
+    </div>
+    <div class="client-carousal owl-carousel owl-theme">
+        @for (int i = 0; i < Model.Client.Count(); i++)
+        {
+            <div class="item">
+                <img src="@Model.Client[i].Logo" />
+            </div>
+        }
+    </div>
+</div>
+
+<div class="newsletter">
+    <div class="container">
+        <h1>JOIN THE <span style="font-size:6vh;">M</span> FAMILY</h1>
+        <p>Stay up-to-date with exclusive style updates & more!</p>
+        <span class="errorsubscribe"></span>
+        <div class="buttonIn">
+            <form id="subscribe">
+                <input type="text" placeholder="E-mail" name="Email" id="enter" class="subscribeInput">
+                <button id="clear" class="subscribeBtn" type="button"><i class="bi bi-chevron-right"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+<script>
+    function travelAlbumShow() {
+
+    }
+    $(document).ready(function () {
+        getEcomStyling();
+        gettourism();
+        getbridalslider();
+        getTravelJournal();
+
+        $("a.owl-prev").click(function () {
+            $("div.owl-prev").click();
+        })
+        $("a.owl-next").click(function () {
+            $("div.owl-next").click();
+        })
+        $('.client-carousal').owlCarousel({
+            loop: true,
+            margin: 20,
+            autoplay: true,
+            slideTransition: 'linear',
+            autoplayTimeout: 3220,
+            smartSpeed: 3200,
+            dots: true,
+            pagination: false,
+            navigation: true,
+            responsive: {
+                0: {
+                    items: 3
+                },
+                600: {
+                    items: 5
+                },
+                1000: {
+                    items: 8
+                }
+            }
+        });
+    });
+    $(".subscribeBtn").click(function () {
+        $(".errorsubscribe").html("");
+        var input = $(".subscribeInput").val();
+        if (input.length > 1) {
+            $(".subscribeBtn").prop('disabled', true);
+            $.ajax({
+                type: 'POST',
+                url: '/Home/AddsubscribeForm',
+                data: $("#subscribe").serialize(),
+                success: function (response) {
+                    $(".subscribeBtn").prop('disabled', false);
+                    if (response == "true") {
+                        jQuery("#subscribe")[0].reset();
+                        $(".errorsubscribe").html("* Thanks for joining the M Family");
+                    }
+                    else {
+                        $(".errorsubscribe").html(response);
+                    }
+                },
+                error: function (response) {
+                    alert("Something went wrong");
+                    $(".subscribeBtn").prop('disabled', false);
+                }
+            });
+            $(".subscribeBtn").prop('disabled', false);
+        }
+        else {
+            $(".errorsubscribe").html("* Email is reqired");
+        }
+    });
+    function getEcomStyling() {
+        var searchvalue = "COMMERCIAL & ECOMMERCE STYLING";
+        $.ajax({
+            type: "POST",
+            url: "/Home/SliderData",
+            dataType: 'json',
+            data: {
+                SearchType: searchvalue,
+            },
+            success: function (response) {
+                var returnedData = JSON.parse(response);
+                jQuery.each(returnedData, function (index, item) {
+                    var variable = '' +
+                        '<div class="album-container">' +
+                            '<img class="album-cover image" src=" ' + item.ThumbnailImage + '" />' +
+                            '<div class="album-info-overlay middle">' +
+                                '<div class="text">' +
+                                    '<h1>' + item.Name + '</h1>' +
+                                    '<a class="view-btn" href="/Album/AlbumPhotos/?AlbumName='+ item.Name +'">VIEW ALL</a>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '';
+                    $("#ecomOwl").append(variable);
+                });
+                $('.main-content .owl-carousel').owlCarousel({
+                    stagePadding: 50,
+                    loop: true,
+                    autoplay: true,
+                    autoplayHoverPause: true,
+                    autoplayTimeout: 1520,
+                    smartSpeed: 1500,
+                    animateIn: 'linear',
+                    animateOut: 'linear',
+                    margin: 10,
+                    nav: true,
+                    navText: [
+                        '<i class="bi bi-chevron-left"></i>',
+                        '<i class="bi bi-chevron-right"></i>'
+                    ],
+                    navContainer: '.main-content .custom-nav',
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        600: {
+                            items: 3
+                        },
+                        1000: {
+                            items: 4
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    function gettourism() {
+        var searchvalue = "VOGUE INDIA DUBAI X TOURISM";
+        $.ajax({
+            type: "POST",
+            url: "/Home/SliderData",
+            dataType: 'json',
+            data: {
+                SearchType: searchvalue,
+            },
+            success: function (response) {
+                var returnedData = JSON.parse(response);
+                var image = $('#BigBanner');
+                image.attr('src', returnedData.ThumbnailImage);
+                jQuery.each(returnedData.Imgs, function (index, item) {
+
+                    var variable = '' +
+                        '        <img id= "tou' + (index + 1) + '" src="' + item + '" />' +
+                        '';
+                    $("#SmallBanner").append(variable);
+                });
+            }
+        });
+    }
+
+    function getTravelJournal() {
+        var searchvalue = "TRAVEL & PHOTOGRAPHY JOURNAL";
+        $.ajax({
+            type: "POST",
+            url: "/Home/SliderData",
+            dataType: 'json',
+            data: {
+                SearchType: searchvalue,
+            },
+            success: function (response) {
+                var returnedData = JSON.parse(response);
+                var image = $('#travel-ban');
+                image.attr('src', returnedData.ThumbnailImage);
+                jQuery.each(returnedData.Imgs, function (index, item) {
+
+                    var variable = '' +
+                        ' <div class="col-6">' +
+                            '<img src = "' + item + '" /> ' +
+                        '</div > ' +
+                        '';
+                    $("#right-small-imgs").append(variable);
+                });
+            }
+        });
+    }
+    function getbridalslider() {
+        var searchvalue = "BRIDAL STYLING";
+        $.ajax({
+            type: "POST",
+            url: "/Home/SliderData",
+            dataType: 'json',
+            data: {
+                SearchType: searchvalue,
+            },
+            success: function (response) {
+                var returnedData = JSON.parse(response);
+                var variable = '' +
+                    '<div class="item">' +
+                    '    <img src="' + returnedData.ThumbnailImage + '" />' +
+                    '</div>' +
+                    '';
+                $(".bridal-carousal").append(variable);
+                jQuery.each(returnedData.Imgs, function (index, item) {
+                    var variable = '' +
+                        '<div class="item">' +
+                        '    <img src="' + item + '" />' +
+                        '</div>' +
+                        '';
+                    $(".bridal-carousal").append(variable);
+                });
+                $('.bridal-carousal').owlCarousel({
+                    loop: true,
+                    nav: true,
+                    navText: [
+                        '<i class="bi bi-chevron-left"></i>',
+                        '<i class="bi bi-chevron-right"></i>'
+                    ],
+                    items: 1,
+                    autoplay: true,
+                    autoplayTimeout: 1520,
+                    smartSpeed: 1500,
+                    animateOut: 'fadeOut'
+                })
+            }
+        });
+    }
+
+    setInterval(function () {
+
+        $(".travel-img").switchClass("travel-img", "slide-img");
+
+        var ban = $('#BigBanner').attr('src');
+        var one = $('#tou1').attr('src');
+        var two = $('#tou2').attr('src');
+        var three = $('#tou3').attr('src');
+
+        $("#BigBanner").attr("src", one);
+        $("#tou1").attr("src", two);
+        $("#tou2").attr("src", three);
+        $("#tou3").attr("src", ban);
+
+        $(".slide-img").switchClass("slide-img", "travel-img");
+    }, 7000);
+</script>

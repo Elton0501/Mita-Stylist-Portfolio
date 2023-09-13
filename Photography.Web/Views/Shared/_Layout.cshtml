@@ -1,0 +1,137 @@
+﻿@using Services;
+@{
+    var sminfo = Services.KeyService.Instance.keydata("SocialMedia");
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/owl.carousel.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="~/Content/all.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/owl.carousel.js"></script>
+
+    <style>
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: max-content;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            margin: 0 -50px;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        footer{
+            padding-top:5px;
+        }
+
+        @@media (max-width: 880px)
+        {
+            .footer-icons {
+                padding: 0.5rem !important;
+            }
+        }
+        
+        @@media (max-width: 500px)
+        {
+            .dropdown-content {
+                margin: 0 -100px;
+            }
+        }
+
+        
+
+    </style>
+
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-8 navbar-logo"><a href="/Home/Index"><img src="~/Content/Images/logo.png" alt="logo" /></a></div>
+                <div style = "z-index: 2;" class="col-md-8 col-4 navbar-menu">
+                    <nav>
+                        <ul>
+                            <li><a href="/">HOME</a></li>
+                            <li style="z-index: 3;">
+                                <div class="dropdown">
+                                     <a style="cursor:pointer" class="dropbtn" >STYLING</a>
+                                    <div class="dropdown-content">
+                                        <a href="@Url.Action("Album","Album", new { CatName = "COMMERCIAL & ECOMMERCE STYLING" })">Commercial & E-Comm Styling</a>
+                                        <a href="/Home/Index/#styling">On Set Styling</a>
+                                        <a href="@Url.Action("AlbumPhotos","Album", new { AlbumName = "BRIDAL STYLING" })">Bridal Styling</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li><a href="@Url.Action("CustomDesign","Album")">CUSTOM DESIGN</a></li>
+                            <li><a href="/Home/About">ABOUT US</a></li>
+                            <li><a href="/Home/Contact">CONTACT</a></li>
+                        </ul>
+                    </nav>
+                    <div class="navbar-icon">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body">
+        @RenderBody()
+    </div>
+
+    <footer class="d-lg-flex justify-content-around">
+        <div class="footer-logo">
+            <a href="/Home/Index"><img src="~/Content/Images/logo.png" /></a>
+        </div>
+        <div class="footer-icons">
+            @foreach (var item in sminfo)
+            {
+                <a class="pr-1" href="@item.Name"><i class="@item.Description"></i></a>
+            }
+        </div>
+        <div class="footer-copy">
+            <p>
+                © Copyright Mita Das Gupta 2023
+            </p>
+        </div>
+    </footer>
+
+
+    <script>
+        $('.navbar-icon').click(function () {
+            $(this).toggleClass("active");
+            $(".navbar-menu nav").toggleClass("active");
+        });
+    </script>
+</body>
+</html>

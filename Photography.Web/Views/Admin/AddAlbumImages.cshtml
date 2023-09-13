@@ -1,0 +1,184 @@
+﻿@{
+    ViewBag.Title = "AddAlbumImages";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var albumId = ViewBag.AlbumID;
+    var albumName = ViewBag.AlbumName;
+}
+
+
+<style>
+    .img-container {
+        border: 1px solid #d1d3e2;
+        padding: 0.75rem;
+        border-radius: 10px;
+    }
+
+    .img-pro-box {
+        width: 17%;
+        margin: 1rem;
+        border-radius: 10px;
+    }
+
+
+    .error {
+        font-size: 1rem;
+        width: 100%;
+    }
+</style>
+
+<div class="adminpage-head">
+    <div class="card shadow mb-4">
+        <div class="form-horizontal">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h4>Add Album Image</h4>
+            </div>
+            <hr />
+            <div class="card-body">
+                <form id="category-create">
+                    <div class="form-group col-12">
+                        <label class="control-label">Album Name</label><br />
+                        <input class="form-control" name="Name" value="@albumName" required readonly/>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group col-md-10">
+                                <div class="img-container">
+                                    <label for="exampleFormControlInput1">Thumbnail Image</label>
+                                    <br />
+                                    <input id="ProductImage" name="PImageName" value="" hidden />
+                                    <input id="imageUpload" type="file" name="ImageOne" accept="image/*" class="form-control-file" multiple>
+                                    <br />
+                                    <div id="alliamge">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button value="Create" type="button" id="Categorycreate" class="btn btn-default btn-outline-primary">Create</button>
+                            </div>
+                        </div>
+                        <div class="form-group ml-3">
+                            <div class="">
+                                <a id="catbox-close" href="/Admin/AlbumList" class="btn btn-default btn-outline-danger">Back To List</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#imageUpload").change(function () {
+        var element = this;
+
+        var formData = new FormData();
+        var totlaFiles = element.files.length;
+
+        for (var i = 0; i < totlaFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file)
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("MultipleUploadImageDefault", "Image")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                if (response != null) {
+                    var data = JSON.parse(response);
+                    var inputImg = $("#ProductImage");
+                    var oldValue = "";
+                    if (inputImg.val().length > 0) {
+                        var strImg = inputImg.val();
+                        var arrayString = strImg.split(',');
+                        $.each(arrayString, function (i, value) {
+                            data.push({ Image: value });
+                        });
+                        oldValue = inputImg.val() + ",";
+                    }
+                    var saveimg = [];
+                    var imagedata = '<div class=\"ProImages row\">';
+                    for (var i = 0; i < data.length; i++) {
+                        imagedata = imagedata + '<div class=\"col-md-3 img-boxx\"> <img src=' + data[i].Image + ' onclick="defaultimg(' + "'" + data[i].Image + "'" + ')" alt=\"Image\" class=\"img-pro-box\">' +
+                            '<button type=\"button\" class=\"btn btn-default btn-outline-danger\" onclick="imgdel(' + "'" + data[i].Image + "'" + ')" id=\"img-delete\"><i class=\"bi bi-x\"></i></button></div>';
+                        saveimg.push(data[i].Image);
+
+                    }
+                    imagedata = imagedata + '</div>';
+                    $("#alliamge").show();
+                    $("#alliamge").html(imagedata);
+                    var url = saveimg.join(",");
+                    console.log(data);
+
+                    inputImg.val(url);
+                }
+                else {
+                    $('.loadermodel').hide();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                }
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
+        });
+    });
+
+    //$('#category-create').validate({
+    //    rules: {
+    //        Name: {
+    //            required: true,
+    //        },
+    //    },
+    //    messages: {
+    //        Name: {
+    //            required: '* Album name is required',
+    //        },
+    //    }
+    //});
+    @*$("#Categorycreate").click(function () {
+        if ($("#category-create").valid()) {
+            $.ajax({
+                type: 'Post',
+                url: '@Url.Action("AlbumAdd", "Admin")',
+                data: $("#category-create").serialize(),
+            })
+                .done(function (response) {
+                if (response == "true") {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Album added Successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setTimeout(function () {// wait for 5 secs(2)
+                        window.location.href = "/Admin/AlbumList"; // then reload the page.(3)
+                    }, 1550);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                })
+            });
+         }
+     });*@
+</script>

@@ -1,0 +1,142 @@
+﻿@model Models.Album
+@{
+    ViewBag.Title = "Travel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .owl-prev, .owl-next {
+        position: absolute;
+        font-size: 7vh !important;
+        color: var(--text) !important;
+        top: 45%;
+    }
+
+    .owl-prev {
+        left: 2%;
+    }
+
+    .owl-next {
+        right: 2%;
+    }
+
+    .travel-container {
+        margin: auto;
+    }
+
+    .fixed-bottom {
+        /* Styles for the div that should be fixed at the bottom */
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+    }
+
+
+
+    @@media(max-width: 1024px) {
+        footer {
+            padding-top: 4rem;
+        }
+
+        .travel-container {
+            padding-top: 5rem;
+        }
+    }
+
+    @@media(max-width: 500px) {
+        .travel-container {
+            height: 73vh;
+            padding: 13vh 0;
+        }
+    }
+
+    @@media(max-height: 1024px) and (max-width: 415px) {
+        .travel-container {
+            padding: 5vh 0;
+        }
+    }
+
+    @@media(min-width: 769px) {
+        .owl-next {
+            right: -15%;
+        }
+
+        .owl-prev {
+            left: -15%;
+        }
+    }
+
+    @@media(min-width: 768px) {
+        .travel-container {
+            max-width: 650px !important;
+        }
+    }
+
+    @@media(min-width: 992px) {
+        .travel-container {
+            max-width: 650px !important;
+        }
+    }
+
+    @@media(min-width: 1200px) {
+        .travel-container {
+            max-width: 750px !important;
+        }
+    }
+
+    @@media(min-width: 1400px) {
+        .travel-container {
+            max-width: 700px !important;
+        }
+    }
+</style>
+
+<div class="travel-container">
+
+    <div class="owl-carousel owl-theme">
+
+        <div class="item">
+            <img src="@Model.ThumbnailImage" />
+        </div>
+        @foreach (var item in Model.AlbumImages.OrderByDescending(X => X.Id))
+        {
+            <div class="item">
+                <img src="@item.Image" />
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $(".stuck-bottom").addClass('fixed-bottom')
+    });
+
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: true,
+        dots: false,
+
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 1
+            },
+            1000: {
+                items: 1
+            }
+        }
+    })
+
+    $(".owl-prev").html('<i class="bi bi-chevron-left"></i>');
+    $(".owl-next").html('<i class="bi bi-chevron-right"></i>');
+</script>
+
